@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import type { CSSProperties } from "react";
+import React, { useMemo, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import "./FeedbackWidget.css";
 
 export interface FeedbackTheme {
@@ -7,9 +7,20 @@ export interface FeedbackTheme {
   backgroundColor?: string;
   textColor?: string;
   accentColor?: string;
+  borderColor?: string;
   borderRadius?: string;
   fontFamily?: string;
   darkMode?: boolean;
+  /** Control stacking when used alongside other overlays */
+  zIndex?: number;
+}
+
+export type FeedbackPosition = "bottom-right" | "bottom-left" | "center";
+export type FeedbackRatingType = "emoji" | "star" | "number";
+
+export interface FeedbackRatingItem {
+  value: number;
+  label: ReactNode;
 }
 
 export interface FeedbackContent {
@@ -27,13 +38,28 @@ export interface FeedbackContent {
 export interface FeedbackWidgetProps {
   sourceId: string;
   variant?: "modal" | "embedded";
-  position?: "bottom-right" | "bottom-left" | "center";
-  ratingType?: "emoji" | "star" | "number";
+  position?: FeedbackPosition;
+  ratingType?: FeedbackRatingType;
+  /** Custom rating scale (emojis, text labels, etc.) */
+  ratingItems?: FeedbackRatingItem[];
   isOpen?: boolean; // If controlled externally
   onClose?: () => void;
   theme?: FeedbackTheme;
   content?: FeedbackContent;
   defaultOpen?: boolean; // For initial open state if uncontrolled
+  /**
+   * Show the floating trigger button for the modal variant when uncontrolled.
+   * Turn this off when you want to wire your own trigger and control `isOpen`.
+   */
+  showTrigger?: boolean;
+  /** Accessible label for the trigger button */
+  triggerAriaLabel?: string;
+  /** Optional className hook for the outer wrapper */
+  className?: string;
+  /** Optional style overrides for the card itself */
+  cardStyle?: CSSProperties;
+  /** Optional style overrides for the trigger button */
+  triggerStyle?: CSSProperties;
 }
 
 const EMOJIS = [
@@ -70,6 +96,12 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
   onClose,
   theme,
   content,
+  ratingItems,
+  showTrigger = true,
+  triggerAriaLabel,
+  className,
+  cardStyle,
+  triggerStyle,
 }) => {
   const [internalIsOpen, setInternalIsOpen] = useState(defaultOpen);
   const [rating, setRating] = useState<number | null>(null);
@@ -114,64 +146,99 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
   };
 
   // Generate CSS Variables based on theme
-  const styleVariables = {
-    "--lb-primary": theme?.primaryColor,
-    "--lb-bg": theme?.backgroundColor,
-    "--lb-text": theme?.textColor,
-    "--lb-accent-bg": theme?.accentColor,
-    "--lb-font-family": theme?.fontFamily,
-    // Derived dark mode tweaks if not explicitly set could go here
-    ...(theme?.darkMode
-      ? {
-          "--lb-bg": theme.backgroundColor || "#1f2937",
-          "--lb-text": theme.textColor || "#f9fafb",
-          "--lb-text-secondary": "#9ca3af",
-          "--lb-border": "#374151",
-          "--lb-accent-bg": "#374151",
-          "--lb-accent-hover": "#4b5563",
-          "--lb-accent-selected": "#1e3a8a",
-          "--lb-input-bg": "#111827",
-          "--lb-focus-ring": "#1e40af",
-        }
-      : {}),
-  } as CSSProperties;
+  const styleVariables = useMemo(() => {
+    const vars: CSSProperties = {
+      "--lb-primary": theme?.primaryColor,
+      "--lb-bg": theme?.backgroundColor,
+      "--lb-text": theme?.textColor,
+      "--lb-accent-bg": theme?.accentColor,
+      "--lb-border": theme?.borderColor,
+      "--lb-font-family": theme?.fontFamily,
+      "--lb-z-index": theme?.zIndex,
+    };
 
-  // Cleanup null/undefined values
-  (Object.keys(styleVariables) as Array<keyof CSSProperties>).forEach((key) => {
-    if (styleVariables[key] === undefined) delete styleVariables[key];
-  });
+    // Derived dark mode tweaks if not explicitly set
+    if (theme?.darkMode) {
+      vars["--lb-bg"] = theme.backgroundColor || "#020617";
+      vars["--lb-text"] = theme.textColor || "#e5e7eb";
+      (vars as any)["--lb-text-secondary"] = "#9ca3af";
+      (vars as any)["--lb-border"] = theme.borderColor || "#1f2937";
+      (vars as any)["--lb-accent-bg"] = theme.accentColor || "#020617";
+      (vars as any)["--lb-accent-hover"] = "#111827";
+      (vars as any)["--lb-accent-selected"] = "#1d4ed8";
+      (vars as any)["--lb-input-bg"] = "#020617";
+      (vars as any)["--lb-focus-ring"] = "#1d4ed8";
+    }
+
+    (Object.keys(vars) as Array<keyof CSSProperties>).forEach((key) => {
+      if (vars[key] === undefined || vars[key] === null) {
+        delete vars[key];
+      }
+    });
+
+    return vars;
+  }, [theme]);
+
+  const effectiveRatingItems: FeedbackRatingItem[] = useMemo(() => {
+    if (ratingItems && ratingItems.length > 0) {
+      return ratingItems;
+    }
+
+    if (ratingType === "emoji") {
+      return EMOJIS;
+    }
+
+    // Default 1–5 scale for stars and numbers
+    return Array.from({ length: 5 }, (_, index) => ({
+      value: index + 1,
+      label: index + 1,
+    }));
+  }, [ratingItems, ratingType]);
 
   const renderRatingItems = () => {
-    const items = [];
-    for (let i = 1; i <= 5; i++) {
-      let content: React.ReactNode = i;
-      if (ratingType === "emoji") content = EMOJIS[i - 1].label;
-      if (ratingType === "star") content = STAR_ICON;
+    return effectiveRatingItems.map((item, index) => {
+      const value = item.value ?? index + 1;
 
-      const isSelected = rating === i;
+      let content: React.ReactNode = item.label ?? value;
+      if (ratingType === "emoji") {
+        content = item.label ?? EMOJIS[index]?.label ?? value;
+      }
+      if (ratingType === "star") {
+        content = STAR_ICON;
+      }
+
+      const isSelected = rating === value;
       const isStarActive =
-        ratingType === "star" && rating !== null && i <= rating;
+        ratingType === "star" && rating !== null && value <= rating;
 
-      items.push(
+      return (
         <button
-          key={i}
+          key={value}
+          type="button"
           className={`lb-rating-btn ${
             ratingType === "star" ? "star-type" : ""
           } ${isSelected ? "selected" : ""} ${isStarActive ? "active" : ""}`}
-          onClick={() => setRating(i)}
+          onClick={() => setRating(value)}
+          aria-label={
+            ratingType === "number"
+              ? `Rate ${value} out of ${effectiveRatingItems.length}`
+              : undefined
+          }
         >
           {content}
         </button>
       );
-    }
-    return items;
+    });
   };
 
   // If embedded, we just render the card. If modal, we render the overlay machinery
   const cardContent = (
     <div
       className="lb-widget-card"
-      style={variant === "embedded" ? styleVariables : undefined}
+      style={{
+        ...(variant === "embedded" ? styleVariables : undefined),
+        ...cardStyle,
+      }}
     >
       {!submitted ? (
         <>
@@ -223,6 +290,7 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
             <button
               className="lb-submit-btn"
+              type="button"
               onClick={handleSubmit}
               disabled={!rating || isSubmitting}
             >
@@ -247,23 +315,31 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
   if (variant === "embedded") {
     return (
-      <div className="lb-root lb-embedded" style={styleVariables}>
+      <div
+        className={`lb-root lb-embedded ${className || ""}`.trim()}
+        style={styleVariables}
+      >
         {cardContent}
       </div>
     );
   }
 
   if (!showWidget) {
-    if (isControlled) return null; // Controlled means we let parent decide
+    if (isControlled || !showTrigger) return null; // Controlled means we let parent decide
     // Uncontrolled: show trigger
     return (
       <div
-        className={`lb-root lb-widget-overlay lb-pos-${position}`}
+        className={`lb-root lb-widget-overlay lb-pos-${position} ${
+          className || ""
+        }`.trim()}
         style={styleVariables}
       >
         <button
           className="lb-widget-trigger"
+          type="button"
           onClick={() => setInternalIsOpen(true)}
+          aria-label={triggerAriaLabel || "Open feedback"}
+          style={triggerStyle}
         >
           <svg
             width="24"
@@ -284,7 +360,9 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
   return (
     <div
-      className={`lb-root lb-widget-overlay lb-pos-${position}`}
+      className={`lb-root lb-widget-overlay lb-pos-${position} lb-open ${
+        className || ""
+      }`.trim()}
       style={styleVariables}
     >
       {cardContent}

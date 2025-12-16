@@ -2,16 +2,21 @@
   /* Default Theme Variables */
   --lb-primary: #2563eb;
   --lb-primary-hover: #1d4ed8;
+
   --lb-bg: #ffffff;
-  --lb-text: #111827;
-  --lb-text-secondary: #6b7280;
-  --lb-border: #e5e7eb;
-  --lb-accent-bg: #f3f4f6;
-  --lb-accent-hover: #e5e7eb;
+  --lb-text: #0f172a;
+  --lb-text-secondary: #64748b;
+
+  --lb-border: #e2e8f0;
+  --lb-accent-bg: #f8fafc;
+  --lb-accent-hover: #e2e8f0;
   --lb-accent-selected: #eff6ff;
-  --lb-input-bg: #f9fafb;
+
+  --lb-input-bg: #f8fafc;
   --lb-focus-ring: #bfdbfe;
-  --lb-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --lb-font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Inter", "Segoe UI", sans-serif;
   --lb-z-index: 9999;
 }
 
@@ -237,28 +242,26 @@
 }
 
 /* Mobile Responsiveness */
-@media (max-width: 480px) {
-  .lb-widget-overlay:not(.lb-embedded) {
-    bottom: 0 !important;
-    right: 0 !important;
-    left: 0 !important;
-    top: 0 !important;
+@media (max-width: 640px) {
+  /* Fullscreen modal only when open */
+  .lb-widget-overlay.lb-open {
+    inset: 0 !important;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.5); /* Modal Backdrop */
-    z-index: 10000;
+    background: rgba(15, 23, 42, 0.45); /* subtle slate backdrop */
+    backdrop-filter: blur(4px);
   }
 
   .lb-widget-card {
-    width: 90%;
-    max-width: 380px;
-    margin: auto;
+    width: min(100% - 32px, 420px);
+    max-width: 420px;
+    margin: 0 auto;
+    border-radius: 18px;
   }
-  
+
   .lb-widget-trigger {
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 10001; /* Above backdrop */
   }
 }
