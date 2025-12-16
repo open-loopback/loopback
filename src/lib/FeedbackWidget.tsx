@@ -147,36 +147,36 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
   // Generate CSS Variables based on theme
   const styleVariables = useMemo(() => {
-    const vars: CSSProperties = {
+    const vars: Record<string, string | number | undefined> = {
       "--lb-primary": theme?.primaryColor,
       "--lb-bg": theme?.backgroundColor,
       "--lb-text": theme?.textColor,
       "--lb-accent-bg": theme?.accentColor,
       "--lb-border": theme?.borderColor,
       "--lb-font-family": theme?.fontFamily,
-      "--lb-z-index": theme?.zIndex,
+      "--lb-z-index": theme?.zIndex ?? undefined,
     };
 
     // Derived dark mode tweaks if not explicitly set
     if (theme?.darkMode) {
       vars["--lb-bg"] = theme.backgroundColor || "#020617";
       vars["--lb-text"] = theme.textColor || "#e5e7eb";
-      (vars as any)["--lb-text-secondary"] = "#9ca3af";
-      (vars as any)["--lb-border"] = theme.borderColor || "#1f2937";
-      (vars as any)["--lb-accent-bg"] = theme.accentColor || "#020617";
-      (vars as any)["--lb-accent-hover"] = "#111827";
-      (vars as any)["--lb-accent-selected"] = "#1d4ed8";
-      (vars as any)["--lb-input-bg"] = "#020617";
-      (vars as any)["--lb-focus-ring"] = "#1d4ed8";
+      vars["--lb-text-secondary"] = "#9ca3af";
+      vars["--lb-border"] = theme.borderColor || "#1f2937";
+      vars["--lb-accent-bg"] = theme.accentColor || "#020617";
+      vars["--lb-accent-hover"] = "#111827";
+      vars["--lb-accent-selected"] = "#1d4ed8";
+      vars["--lb-input-bg"] = "#020617";
+      vars["--lb-focus-ring"] = "#1d4ed8";
     }
 
-    (Object.keys(vars) as Array<keyof CSSProperties>).forEach((key) => {
+    Object.keys(vars).forEach((key) => {
       if (vars[key] === undefined || vars[key] === null) {
         delete vars[key];
       }
     });
 
-    return vars;
+    return vars as CSSProperties;
   }, [theme]);
 
   const effectiveRatingItems: FeedbackRatingItem[] = useMemo(() => {

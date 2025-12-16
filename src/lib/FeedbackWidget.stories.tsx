@@ -48,25 +48,22 @@ export const ModalStarControlled: Story = {
       labels: { low: "Poor", high: "Excellent" },
     },
   },
-  render: (args) => {
-    const [open, setOpen] = useState(true);
+  render: (args) => <ModalStarControlledExample {...args} />,
+};
 
-    return (
-      <div style={{ display: "grid", gap: 12 }}>
-        <button
-          style={{ width: 180 }}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? "Close widget" : "Open widget"}
-        </button>
-        <FeedbackWidget
-          {...args}
-          isOpen={open}
-          onClose={() => setOpen(false)}
-        />
-      </div>
-    );
-  },
+const ModalStarControlledExample = (
+  args: React.ComponentProps<typeof FeedbackWidget>
+) => {
+  const [open, setOpen] = useState(true);
+
+  return (
+    <div style={{ display: "grid", gap: 12 }}>
+      <button style={{ width: 180 }} onClick={() => setOpen((value) => !value)}>
+        {open ? "Close widget" : "Open widget"}
+      </button>
+      <FeedbackWidget {...args} isOpen={open} onClose={() => setOpen(false)} />
+    </div>
+  );
 };
 
 export const EmbeddedDark: Story = {
