@@ -1,21 +1,21 @@
 {
-  "name": "@loopback/widget",
+  "name": "open-loopback",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/loopback-feedback.umd.cjs",
-  "module": "./dist/loopback-feedback.mjs",
+  "main": "./dist/loopback.umd.cjs",
+  "module": "./dist/loopback.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/loopback-feedback.mjs",
-      "require": "./dist/loopback-feedback.umd.cjs"
+      "import": "./dist/loopback.js",
+      "require": "./dist/loopback.umd.cjs"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/loopback.css"
   },
   "sideEffects": [
     "**/*.css"
@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.build.json && vite build",
+    "build": "vite build && tsc -p tsconfig.build.json",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",

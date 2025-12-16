@@ -1,8 +1,8 @@
-## @loopback/widget
+## open-loopback
 
 **Beautiful, embeddable feedback widget for React.**
 
-`@loopback/widget` is a polished, themeable feedback component you can drop into any React app.  
+`open-loopback` is a polished, themeable feedback component you can drop into any React app.  
 It supports modal and embedded layouts, emoji/star/number ratings, rich theming (including dark mode), and both controlled and uncontrolled usage.
 
 ---
@@ -10,11 +10,11 @@ It supports modal and embedded layouts, emoji/star/number ratings, rich theming 
 ### Installation
 
 ```bash
-npm install @loopback/widget
+npm install open-loopback
 # or
-yarn add @loopback/widget
+yarn add open-loopback
 # or
-pnpm add @loopback/widget
+pnpm add open-loopback
 ```
 
 **Peer dependencies**
@@ -32,8 +32,8 @@ Make sure your project has:
 
 ```tsx
 import React from "react";
-import { FeedbackWidget } from "@loopback/widget";
-import "@loopback/widget/dist/style.css"; // include styles
+import { FeedbackWidget } from "open-loopback";
+import "open-loopback/dist/style.css"; // include styles
 
 export function App() {
   return (
@@ -54,8 +54,8 @@ export function App() {
 
 ```tsx
 import React from "react";
-import { FeedbackWidget } from "@loopback/widget";
-import "@loopback/widget/dist/style.css";
+import { FeedbackWidget } from "open-loopback";
+import "open-loopback/dist/style.css";
 
 export function FeedbackSection() {
   return (
@@ -86,13 +86,13 @@ The main export is:
 You’ll typically import it like:
 
 ```ts
-import { FeedbackWidget } from "@loopback/widget";
+import { FeedbackWidget } from "open-loopback";
 ```
 
 …and once at app entry:
 
 ```ts
-import "@loopback/widget/dist/style.css";
+import "open-loopback/dist/style.css";
 ```
 
 ---
@@ -251,8 +251,8 @@ The widget:
 
 ```tsx
 import React from "react";
-import { FeedbackWidget } from "@loopback/widget";
-import "@loopback/widget/dist/style.css";
+import { FeedbackWidget } from "open-loopback";
+import "open-loopback/dist/style.css";
 
 export function ControlledExample() {
   const [open, setOpen] = React.useState(false);
@@ -345,8 +345,8 @@ The package is configured as a React component library:
 
   - `package.json` includes `"files": ["dist"]`, so only the built files are published.
   - The `"exports"` field maps:
-    - `@loopback/widget` → JS entrypoints and types
-    - `@loopback/widget/style.css` → the built stylesheet
+    - `open-loopback` → JS entrypoints and types
+    - `open-loopback/style.css` → the built stylesheet
 
 Make sure you are logged in (`npm login`) and have permission to publish packages under the `@loopback` scope.
 
@@ -356,4 +356,4 @@ Make sure you are logged in (`npm login`) and have permission to publish package
 
 **MIT**
 
-You’re free to use, modify, and embed `@loopback/widget` in your own projects.
+You’re free to use, modify, and embed `open-loopback` in your own projects.
