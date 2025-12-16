@@ -1,5 +1,5 @@
 {
-  "name": "loopback-feedback-widget",
+  "name": "@loopback/widget",
   "private": false,
   "version": "0.1.0",
   "type": "module",
@@ -7,17 +7,37 @@
     "dist"
   ],
   "main": "./dist/loopback-feedback.umd.cjs",
-  "module": "./dist/loopback-feedback.js",
+  "module": "./dist/loopback-feedback.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/loopback-feedback.js",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/loopback-feedback.mjs",
       "require": "./dist/loopback-feedback.umd.cjs"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "feedback",
+    "widget",
+    "loopback",
+    "ui",
+    "component",
+    "modal",
+    "survey",
+    "rating"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -p tsconfig.build.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
