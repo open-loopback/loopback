@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import "./FeedbackWidget.css";
+import "./Loopback.css";
 
-export interface FeedbackTheme {
+export interface LoopbackTheme {
   primaryColor?: string;
   backgroundColor?: string;
   textColor?: string;
@@ -18,12 +18,12 @@ export interface FeedbackTheme {
 export type FeedbackPosition = "bottom-right" | "bottom-left" | "center";
 export type FeedbackRatingType = "emoji" | "star" | "number";
 
-export interface FeedbackRatingItem {
+export interface LoopbackRatingItem {
   value: number;
   label: ReactNode;
 }
 
-export interface FeedbackContent {
+export interface LoopbackContent {
   title?: string;
   subtitle?: string;
   placeholder?: string;
@@ -35,17 +35,17 @@ export interface FeedbackContent {
   };
 }
 
-export interface FeedbackWidgetProps {
+export interface LoopbackProps {
   sourceId: string;
   variant?: "modal" | "embedded";
   position?: FeedbackPosition;
   ratingType?: FeedbackRatingType;
   /** Custom rating scale (emojis, text labels, etc.) */
-  ratingItems?: FeedbackRatingItem[];
+  ratingItems?: LoopbackRatingItem[];
   isOpen?: boolean; // If controlled externally
   onClose?: () => void;
-  theme?: FeedbackTheme;
-  content?: FeedbackContent;
+  theme?: LoopbackTheme;
+  content?: LoopbackContent;
   defaultOpen?: boolean; // For initial open state if uncontrolled
   /**
    * Show the floating trigger button for the modal variant when uncontrolled.
@@ -86,7 +86,7 @@ const STAR_ICON = (
   </svg>
 );
 
-export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
+export const Loopback: React.FC<LoopbackProps> = ({
   sourceId,
   variant = "modal",
   position = "bottom-right",
@@ -179,7 +179,7 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
     return vars as CSSProperties;
   }, [theme]);
 
-  const effectiveRatingItems: FeedbackRatingItem[] = useMemo(() => {
+  const effectiveRatingItems: LoopbackRatingItem[] = useMemo(() => {
     if (ratingItems && ratingItems.length > 0) {
       return ratingItems;
     }

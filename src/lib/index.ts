@@ -1,3 +1,3 @@
-export { FeedbackWidget } from './FeedbackWidget';
-export type { FeedbackWidgetProps } from './FeedbackWidget';
-import './FeedbackWidget.css';
+export { Loopback } from './Loopback';
+export type { LoopbackProps } from './Loopback';
+import './Loopback.css';

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { FeedbackWidget } from "./FeedbackWidget";
+import { Loopback } from "./Loopback";
 
-const meta: Meta<typeof FeedbackWidget> = {
-  title: "Components/FeedbackWidget",
-  component: FeedbackWidget,
+const meta: Meta<typeof Loopback> = {
+  title: "Components/Loopback",
+  component: Loopback,
   tags: ["autodocs"],
   args: {
     sourceId: "storybook-feedback",
@@ -16,7 +16,7 @@ const meta: Meta<typeof FeedbackWidget> = {
 
 export default meta;
 
-type Story = StoryObj<typeof FeedbackWidget>;
+type Story = StoryObj<typeof Loopback>;
 
 export const ModalEmoji: Story = {
   name: "Modal - Emoji (default)",
@@ -52,7 +52,7 @@ export const ModalStarControlled: Story = {
 };
 
 const ModalStarControlledExample = (
-  args: React.ComponentProps<typeof FeedbackWidget>
+  args: React.ComponentProps<typeof Loopback>
 ) => {
   const [open, setOpen] = useState(true);
 
@@ -61,7 +61,7 @@ const ModalStarControlledExample = (
       <button style={{ width: 180 }} onClick={() => setOpen((value) => !value)}>
         {open ? "Close widget" : "Open widget"}
       </button>
-      <FeedbackWidget {...args} isOpen={open} onClose={() => setOpen(false)} />
+      <Loopback {...args} isOpen={open} onClose={() => setOpen(false)} />
     </div>
   );
 };
@@ -83,7 +83,7 @@ export const EmbeddedDark: Story = {
   },
   render: (args) => (
     <div style={{ maxWidth: 420, margin: "0 auto", padding: 24 }}>
-      <FeedbackWidget {...args} />
+      <Loopback {...args} />
     </div>
   ),
 };
@@ -104,7 +104,7 @@ export const EmbeddedLight: Story = {
   },
   render: (args) => (
     <div style={{ maxWidth: 420, margin: "0 auto", padding: 24 }}>
-      <FeedbackWidget {...args} />
+      <Loopback {...args} />
     </div>
   ),
 };

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { FeedbackWidget } from "./lib/FeedbackWidget";
+import { Loopback } from "./lib";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +35,7 @@ function App() {
         }}
       >
         <h3>Embedded Mode (Dark Theme Override)</h3>
-        <FeedbackWidget
+        <Loopback
           sourceId="demo-embedded"
           variant="embedded"
           theme={{
@@ -60,7 +60,7 @@ function App() {
       >
         <h3>Customized Star Rating (Center Modal)</h3>
         <button onClick={() => setIsOpen(true)}>Open Star Widget</button>
-        <FeedbackWidget
+        <Loopback
           sourceId="demo-stars"
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
@@ -88,7 +88,7 @@ function App() {
         <h3>Default Sticky Widget</h3>
         <p>Check the bottom right corner (or center on mobile).</p>
         <p>It follows the global theme button above.</p>
-        <FeedbackWidget
+        <Loopback
           sourceId="demo-default"
           theme={{
             darkMode: themeMode === "dark",

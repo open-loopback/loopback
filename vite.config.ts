@@ -5,7 +5,8 @@ import { resolve } from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  build: {
+    build: {
+    copyPublicDir: false,
     lib: {
       entry: resolve(__dirname, "src/lib/index.ts"),
       name: "Loopback",
