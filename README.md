@@ -32,14 +32,14 @@ Make sure your project has:
 
 ```tsx
 import React from "react";
-import { FeedbackWidget } from "open-loopback";
-import "open-loopback/dist/style.css"; // include styles
+import { Loopback } from "open-loopback";
+import "open-loopback/style.css"; // include styles
 
 export function App() {
   return (
     <div>
       <h1>My App</h1>
-      <FeedbackWidget
+      <Loopback
         sourceId="my-product"
         variant="modal"
         position="bottom-right"
@@ -54,13 +54,13 @@ export function App() {
 
 ```tsx
 import React from "react";
-import { FeedbackWidget } from "open-loopback";
-import "open-loopback/dist/style.css";
+import { Loopback } from "open-loopback";
+import "open-loopback/style.css";
 
 export function FeedbackSection() {
   return (
     <section style={{ maxWidth: 420, margin: "0 auto", padding: 24 }}>
-      <FeedbackWidget
+      <Loopback
         sourceId="docs-section"
         variant="embedded"
         ratingType="emoji"
@@ -80,26 +80,26 @@ export function FeedbackSection() {
 
 The main export is:
 
-- **`FeedbackWidget`** – the feedback UI component
-- **`FeedbackWidgetProps`** – TypeScript props interface (re-exported)
+- **`Loopback`** – the feedback UI component
+- **`LoopbackProps`** – TypeScript props interface (re-exported)
 
-You’ll typically import it like:
+You'll typically import it like:
 
 ```ts
-import { FeedbackWidget } from "open-loopback";
+import { Loopback } from "open-loopback";
 ```
 
 …and once at app entry:
 
 ```ts
-import "open-loopback/dist/style.css";
+import "open-loopback/style.css";
 ```
 
 ---
 
 ### Props
 
-#### `FeedbackWidgetProps`
+#### `LoopbackProps`
 
 - **sourceId** (`string`, required)  
   Unique identifier for the feedback source (e.g. `"homepage-hero"`, `"pricing-page"`, `"docs-search"`).
@@ -118,10 +118,10 @@ import "open-loopback/dist/style.css";
   How the rating scale is displayed.  
   **Default**: `"emoji"`.
 
-- **ratingItems** (`FeedbackRatingItem[]`)  
+- **ratingItems** (`LoopbackRatingItem[]`)  
   Custom rating items if you want your own scale.
 
-  Each `FeedbackRatingItem` is:
+  Each `LoopbackRatingItem` is:
 
   - **value** (`number`)
   - **label** (`ReactNode`)
@@ -153,10 +153,10 @@ import "open-loopback/dist/style.css";
   Accessible label for the trigger button.  
   **Default**: `"Open feedback"`.
 
-- **theme** (`FeedbackTheme`)  
+- **theme** (`LoopbackTheme`)  
   Theming options (see **Theming** below).
 
-- **content** (`FeedbackContent`)  
+- **content** (`LoopbackContent`)  
   Custom copy and labels, e.g. headings, helper text, button labels.
 
 - **className** (`string`)  
@@ -174,7 +174,7 @@ import "open-loopback/dist/style.css";
 
 Use the `theme` prop to tune colors, radius, and dark mode.
 
-#### `FeedbackTheme`
+#### `LoopbackTheme`
 
 - **primaryColor?** (`string`) – Accent color (buttons, active states).
 - **backgroundColor?** (`string`) – Card background.
@@ -189,7 +189,7 @@ Use the `theme` prop to tune colors, radius, and dark mode.
 #### Example
 
 ```tsx
-<FeedbackWidget
+<Loopback
   sourceId="checkout"
   variant="modal"
   position="center"
@@ -234,7 +234,7 @@ You can let the widget manage its own open/close state or wire it to your own UI
 #### Uncontrolled (simplest)
 
 ```tsx
-<FeedbackWidget
+<Loopback
   sourceId="homepage"
   variant="modal"
   defaultOpen={false}
@@ -251,8 +251,8 @@ The widget:
 
 ```tsx
 import React from "react";
-import { FeedbackWidget } from "open-loopback";
-import "open-loopback/dist/style.css";
+import { Loopback } from "open-loopback";
+import "open-loopback/style.css";
 
 export function ControlledExample() {
   const [open, setOpen] = React.useState(false);
@@ -261,7 +261,7 @@ export function ControlledExample() {
     <>
       <button onClick={() => setOpen(true)}>Give feedback</button>
 
-      <FeedbackWidget
+      <Loopback
         sourceId="pricing"
         variant="modal"
         isOpen={open}
@@ -290,9 +290,9 @@ The payload includes:
 - **rating** – selected rating value (1–5)
 - **feedback** – free‑text comment
 
-For production, you’ll typically:
+For production, you'll typically:
 
-1. Fork or copy the `FeedbackWidget` implementation.
+1. Fork or copy the `Loopback` implementation.
 2. Replace the mock `handleSubmit` logic with a real API call to your backend or analytics system.
 3. Optionally add error handling and retry UX.
 
@@ -330,10 +330,10 @@ The package is configured as a React component library:
   This will:
 
   - Emit bundles into `dist/`:
-    - ESM: `dist/loopback-feedback.mjs`
-    - CJS: `dist/loopback-feedback.umd.cjs`
+    - ESM: `dist/loopback.js`
+    - CJS: `dist/loopback.umd.cjs`
   - Emit TypeScript declarations into `dist/index.d.ts`.
-  - Emit styles into `dist/style.css`.
+  - Emit styles into `dist/loopback.css`.
 
 - **Publish**:
 
@@ -348,7 +348,7 @@ The package is configured as a React component library:
     - `open-loopback` → JS entrypoints and types
     - `open-loopback/style.css` → the built stylesheet
 
-Make sure you are logged in (`npm login`) and have permission to publish packages under the `@loopback` scope.
+Make sure you are logged in (`npm login`) and have permission to publish packages under the `open-loopback` name.
 
 ---
 
