@@ -5,7 +5,7 @@
 `open-loopback` is a polished, themeable feedback component you can drop into any React app.  
 It supports modal and embedded layouts, emoji/star/number ratings, rich theming (including dark mode), and both controlled and uncontrolled usage.
 
-![](/public/assets/loopback-widget.png)
+![](https://raw.githubusercontent.com/open-loopback/loopback/refs/heads/main/public/assets/loopback-widget.png)
 
 ---
 
@@ -274,83 +274,6 @@ export function ControlledExample() {
   );
 }
 ```
-
----
-
-### Handling Submissions
-
-By default, the widget:
-
-- Logs the payload to `console.log`
-- Simulates a 1s network delay
-- Shows a “Thank you” state
-- Auto-resets and closes (for modal) after a short delay
-
-The payload includes:
-
-- **sourceId** – your identifier
-- **rating** – selected rating value (1–5)
-- **feedback** – free‑text comment
-
-For production, you'll typically:
-
-1. Fork or copy the `Loopback` implementation.
-2. Replace the mock `handleSubmit` logic with a real API call to your backend or analytics system.
-3. Optionally add error handling and retry UX.
-
----
-
-### Development
-
-For local development inside this repo:
-
-- **Dev server**:
-  ```bash
-  npm run dev
-  ```
-- **Storybook** (recommended way to explore variants):
-  ```bash
-  npm run storybook
-  ```
-- **Lint**:
-  ```bash
-  npm run lint
-  ```
-
----
-
-### Building & Publishing
-
-The package is configured as a React component library:
-
-- **Build**:
-
-  ```bash
-  npm run build
-  ```
-
-  This will:
-
-  - Emit bundles into `dist/`:
-    - ESM: `dist/loopback.js`
-    - CJS: `dist/loopback.umd.cjs`
-  - Emit TypeScript declarations into `dist/index.d.ts`.
-  - Emit styles into `dist/loopback.css`.
-
-- **Publish**:
-
-  ```bash
-  npm publish --access public
-  ```
-
-  Notes:
-
-  - `package.json` includes `"files": ["dist"]`, so only the built files are published.
-  - The `"exports"` field maps:
-    - `open-loopback` → JS entrypoints and types
-    - `open-loopback/style.css` → the built stylesheet
-
-Make sure you are logged in (`npm login`) and have permission to publish packages under the `open-loopback` name.
 
 ---
 
