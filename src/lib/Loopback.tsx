@@ -60,6 +60,10 @@ export interface LoopbackProps {
   cardStyle?: CSSProperties;
   /** Optional style overrides for the trigger button */
   triggerStyle?: CSSProperties;
+  /** Optional style overrides for the submit button */
+  submitButtonStyle?: CSSProperties;
+  /** Optional style overrides for the rating buttons */
+  ratingButtonStyle?: CSSProperties;
 }
 
 const EMOJIS = [
@@ -102,6 +106,8 @@ export const Loopback: React.FC<LoopbackProps> = ({
   className,
   cardStyle,
   triggerStyle,
+  submitButtonStyle,
+  ratingButtonStyle,
 }) => {
   const [internalIsOpen, setInternalIsOpen] = useState(defaultOpen);
   const [rating, setRating] = useState<number | null>(null);
@@ -164,10 +170,10 @@ export const Loopback: React.FC<LoopbackProps> = ({
       vars["--lb-text-secondary"] = "#9ca3af";
       vars["--lb-border"] = theme.borderColor || "#1f2937";
       vars["--lb-accent-bg"] = theme.accentColor || "#020617";
-      vars["--lb-accent-hover"] = "#111827";
-      vars["--lb-accent-selected"] = "#1d4ed8";
+      vars["--lb-accent-hover"] = "color-mix(in srgb, var(--lb-accent-bg), white 5%)";
+      vars["--lb-accent-selected"] = "color-mix(in srgb, var(--lb-primary), black 20%)";
       vars["--lb-input-bg"] = "#020617";
-      vars["--lb-focus-ring"] = "#1d4ed8";
+      vars["--lb-focus-ring"] = "color-mix(in srgb, var(--lb-primary), black 20%)";
     }
 
     Object.keys(vars).forEach((key) => {
@@ -224,6 +230,7 @@ export const Loopback: React.FC<LoopbackProps> = ({
               ? `Rate ${value} out of ${effectiveRatingItems.length}`
               : undefined
           }
+          style={ratingButtonStyle}
         >
           {content}
         </button>
@@ -293,6 +300,7 @@ export const Loopback: React.FC<LoopbackProps> = ({
               type="button"
               onClick={handleSubmit}
               disabled={!rating || isSubmitting}
+              style={submitButtonStyle}
             >
               {isSubmitting
                 ? "Submitting..."

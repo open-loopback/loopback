@@ -161,20 +161,40 @@ import "open-loopback/style.css";
 - **content** (`LoopbackContent`)  
   Custom copy and labels, e.g. headings, helper text, button labels.
 
-- **className** (`string`)  
-  Additional class name on the outer wrapper (`lb-root`).
-
-- **cardStyle** (`React.CSSProperties`)  
-  Inline style overrides for the card itself.
-
-- **triggerStyle** (`React.CSSProperties`)  
-  Inline style overrides for the floating trigger button.
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `cardStyle` | `CSSProperties` | `-` | Optional inline styles for the main widget card. |
+| `triggerStyle` | `CSSProperties` | `-` | Optional inline styles for the floating trigger button. |
+| `submitButtonStyle` | `CSSProperties` | `-` | Optional inline styles for the submit button. |
+| `ratingButtonStyle` | `CSSProperties` | `-` | Optional inline styles for the rating buttons. |
 
 ---
 
-### Theming
+## Theming
 
-Use the `theme` prop to tune colors, radius, and dark mode.
+We use standard CSS variables for styling. You can override these in your global CSS or via the `theme` prop.
+
+The library automatically derives hover colors (darkening by 10% for primary, 5% for accent) using `color-mix`. You can override this behavior by setting `--lb-primary-hover` or `--lb-accent-hover` explicitly.
+
+```tsx
+<Loopback
+  theme={{
+    primaryColor: "#E11D48", // Rose-600
+    backgroundColor: "#ffffff",
+    textColor: "#0f172a",
+  }}
+/>
+```
+
+### Exported Types
+
+We export several types to help with TypeScript development:
+- `LoopbackProps`
+- `LoopbackTheme`
+- `FeedbackPosition`
+- `FeedbackRatingType`
+- `LoopbackRatingItem`
+- `LoopbackContent`
 
 #### `LoopbackTheme`
 
