@@ -5,6 +5,8 @@
 `open-loopback` is a polished, themeable feedback component you can drop into any React app.  
 It supports modal and embedded layouts, emoji/star/number ratings, rich theming (including dark mode), and both controlled and uncontrolled usage.
 
+![](/public/assets/loopback-widget.png)
+
 ---
 
 ### Installation
