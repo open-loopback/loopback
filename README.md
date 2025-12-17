@@ -167,6 +167,8 @@ import "open-loopback/style.css";
 | `triggerStyle` | `CSSProperties` | `-` | Optional inline styles for the floating trigger button. |
 | `submitButtonStyle` | `CSSProperties` | `-` | Optional inline styles for the submit button. |
 | `ratingButtonStyle` | `CSSProperties` | `-` | Optional inline styles for the rating buttons. |
+| `headerStyle` | `CSSProperties` | `-` | Optional inline styles for the header container. |
+| `textareaStyle` | `CSSProperties` | `-` | Optional inline styles for the textarea. |
 
 ---
 
@@ -182,6 +184,8 @@ The library automatically derives hover colors (darkening by 10% for primary, 5%
     primaryColor: "#E11D48", // Rose-600
     backgroundColor: "#ffffff",
     textColor: "#0f172a",
+    starColor: "#cbd5e1", // Optional: customize inactive star color
+    starActiveColor: "#fbbf24", // Optional: customize active star color
   }}
 />
 ```

@@ -13,6 +13,10 @@ export interface LoopbackTheme {
   darkMode?: boolean;
   /** Control stacking when used alongside other overlays */
   zIndex?: number;
+  /** Color for inactive stars */
+  starColor?: string;
+  /** Color for active/selected stars */
+  starActiveColor?: string;
 }
 
 export type FeedbackPosition = "bottom-right" | "bottom-left" | "center";
@@ -64,6 +68,10 @@ export interface LoopbackProps {
   submitButtonStyle?: CSSProperties;
   /** Optional style overrides for the rating buttons */
   ratingButtonStyle?: CSSProperties;
+  /** Optional style overrides for the header container */
+  headerStyle?: CSSProperties;
+  /** Optional style overrides for the textarea */
+  textareaStyle?: CSSProperties;
 }
 
 const EMOJIS = [
@@ -108,6 +116,8 @@ export const Loopback: React.FC<LoopbackProps> = ({
   triggerStyle,
   submitButtonStyle,
   ratingButtonStyle,
+  headerStyle,
+  textareaStyle,
 }) => {
   const [internalIsOpen, setInternalIsOpen] = useState(defaultOpen);
   const [rating, setRating] = useState<number | null>(null);
@@ -161,6 +171,8 @@ export const Loopback: React.FC<LoopbackProps> = ({
       "--lb-border": theme?.borderColor,
       "--lb-font-family": theme?.fontFamily,
       "--lb-z-index": theme?.zIndex ?? undefined,
+      "--lb-star-color": theme?.starColor,
+      "--lb-star-active-color": theme?.starActiveColor,
     };
 
     // Derived dark mode tweaks if not explicitly set
@@ -249,7 +261,7 @@ export const Loopback: React.FC<LoopbackProps> = ({
     >
       {!submitted ? (
         <>
-          <div className="lb-header">
+          <div className="lb-header" style={headerStyle}>
             <div>
               <h3 className="lb-title">
                 {content?.title || "Give us your feedback"}
@@ -293,6 +305,7 @@ export const Loopback: React.FC<LoopbackProps> = ({
               placeholder={content?.placeholder || "Please write here..."}
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
+              style={textareaStyle}
             />
 
             <button

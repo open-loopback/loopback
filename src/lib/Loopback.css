@@ -173,13 +173,13 @@
 .lb-rating-btn.star-type {
   font-size: 32px;
   background: transparent;
-  color: #d1d5db;
+  color: var(--lb-star-color, #d1d5db);
   /* Gray stars */
   padding: 0;
 }
 
 .lb-rating-btn.star-type.active {
-  color: #fbbf24;
+  color: var(--lb-star-active-color, #fbbf24);
   /* Gold stars */
 }
 
