@@ -161,14 +161,28 @@ import "open-loopback/style.css";
 - **content** (`LoopbackContent`)  
   Custom copy and labels, e.g. headings, helper text, button labels.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `cardStyle` | `CSSProperties` | `-` | Optional inline styles for the main widget card. |
-| `triggerStyle` | `CSSProperties` | `-` | Optional inline styles for the floating trigger button. |
-| `submitButtonStyle` | `CSSProperties` | `-` | Optional inline styles for the submit button. |
-| `ratingButtonStyle` | `CSSProperties` | `-` | Optional inline styles for the rating buttons. |
-| `headerStyle` | `CSSProperties` | `-` | Optional inline styles for the header container. |
-| `textareaStyle` | `CSSProperties` | `-` | Optional inline styles for the textarea. |
+- **metadata** (`Record<string, unknown>`)  
+  Optional custom data to send along with the feedback. Automatically merged with default metadata (`url`, `referrer`).
+
+| Prop                | Type                      | Default | Description                                             |
+| ------------------- | ------------------------- | ------- | ------------------------------------------------------- |
+| `cardStyle`         | `CSSProperties`           | `-`     | Optional inline styles for the main widget card.        |
+| `triggerStyle`      | `CSSProperties`           | `-`     | Optional inline styles for the floating trigger button. |
+| `submitButtonStyle` | `CSSProperties`           | `-`     | Optional inline styles for the submit button.           |
+| `ratingButtonStyle` | `CSSProperties`           | `-`     | Optional inline styles for the rating buttons.          |
+| `headerStyle`       | `CSSProperties`           | `-`     | Optional inline styles for the header container.        |
+| `textareaStyle`     | `CSSProperties`           | `-`     | Optional inline styles for the textarea.                |
+| `metadata`          | `Record<string, unknown>` | `-`     | Custom data payload for submissions.                    |
+
+---
+
+### Key Features
+
+- **Character Limit**: Feedback text is capped at **1000 characters**. A counter is provided to guide the user.
+- **Automatic Metadata**: By default, the widget captures page context:
+  - `url` (current window location)
+  - `referrer` (originating page)
+- **Error Handling**: Graceful error states and retry UI for failed submissions.
 
 ---
 
@@ -193,6 +207,7 @@ The library automatically derives hover colors (darkening by 10% for primary, 5%
 ### Exported Types
 
 We export several types to help with TypeScript development:
+
 - `LoopbackProps`
 - `LoopbackTheme`
 - `FeedbackPosition`

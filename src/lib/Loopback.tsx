@@ -72,6 +72,8 @@ export interface LoopbackProps {
   headerStyle?: CSSProperties;
   /** Optional style overrides for the textarea */
   textareaStyle?: CSSProperties;
+  /** Optional custom metadata to send with feedback */
+  metadata?: Record<string, unknown>;
 }
 
 const EMOJIS = [
@@ -118,12 +120,14 @@ export const Loopback: React.FC<LoopbackProps> = ({
   ratingButtonStyle,
   headerStyle,
   textareaStyle,
+  metadata,
 }) => {
   const [internalIsOpen, setInternalIsOpen] = useState(defaultOpen);
   const [rating, setRating] = useState<number | null>(null);
   const [feedback, setFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const isControlled = controlledIsOpen !== undefined;
   const showWidget =
@@ -144,21 +148,52 @@ export const Loopback: React.FC<LoopbackProps> = ({
   const handleSubmit = async () => {
     if (!rating) return;
     setIsSubmitting(true);
+    setError(null);
 
-    // Mock network request
-    console.log("Submitting feedback:", { sourceId, rating, feedback });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch(
+        "https://loopback-api.beebombshell.com/feedback",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sourceId,
+            rating,
+            feedbackText: feedback.slice(0, 1000),
+            metadata: {
+              ...metadata,
+              url:
+                typeof window !== "undefined"
+                  ? window.location.href
+                  : undefined,
+              referrer:
+                typeof document !== "undefined" ? document.referrer : undefined,
+            },
+          }),
+        }
+      );
 
-    setIsSubmitting(false);
-    setSubmitted(true);
+      if (!response.ok) {
+        throw new Error("Failed to submit feedback");
+      }
 
-    setTimeout(() => {
-      setSubmitted(false);
-      setRating(null);
-      setFeedback("");
-      if (variant === "modal" && !isControlled) setInternalIsOpen(false);
-      if (onClose) onClose();
-    }, 2000);
+      setSubmitted(true);
+
+      setTimeout(() => {
+        setSubmitted(false);
+        setRating(null);
+        setFeedback("");
+        if (variant === "modal" && !isControlled) setInternalIsOpen(false);
+        if (onClose) onClose();
+      }, 2000);
+    } catch (err) {
+      console.error("Submission error:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Generate CSS Variables based on theme
@@ -182,10 +217,13 @@ export const Loopback: React.FC<LoopbackProps> = ({
       vars["--lb-text-secondary"] = "#9ca3af";
       vars["--lb-border"] = theme.borderColor || "#1f2937";
       vars["--lb-accent-bg"] = theme.accentColor || "#020617";
-      vars["--lb-accent-hover"] = "color-mix(in srgb, var(--lb-accent-bg), white 5%)";
-      vars["--lb-accent-selected"] = "color-mix(in srgb, var(--lb-primary), black 20%)";
+      vars["--lb-accent-hover"] =
+        "color-mix(in srgb, var(--lb-accent-bg), white 5%)";
+      vars["--lb-accent-selected"] =
+        "color-mix(in srgb, var(--lb-primary), black 20%)";
       vars["--lb-input-bg"] = "#020617";
-      vars["--lb-focus-ring"] = "color-mix(in srgb, var(--lb-primary), black 20%)";
+      vars["--lb-focus-ring"] =
+        "color-mix(in srgb, var(--lb-primary), black 20%)";
     }
 
     Object.keys(vars).forEach((key) => {
@@ -300,13 +338,19 @@ export const Loopback: React.FC<LoopbackProps> = ({
               {content?.labels?.textarea || "Write your feedback"}{" "}
               <span>(optional)</span>
             </label>
-            <textarea
-              className="lb-textarea"
-              placeholder={content?.placeholder || "Please write here..."}
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              style={textareaStyle}
-            />
+            <div className="lb-textarea-container">
+              <textarea
+                className="lb-textarea"
+                placeholder={content?.placeholder || "Please write here..."}
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value.slice(0, 1000))}
+                style={textareaStyle}
+                maxLength={1000}
+              />
+              <div className="lb-char-count">{feedback.length}/1000</div>
+            </div>
+
+            {error && <div className="lb-error-message">{error}</div>}
 
             <button
               className="lb-submit-btn"

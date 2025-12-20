@@ -52,7 +52,7 @@
   align-items: center;
 }
 
-.lb-widget-overlay>* {
+.lb-widget-overlay > * {
   pointer-events: auto;
   /* Re-enable pointer events for children */
 }
@@ -65,7 +65,8 @@
   width: 56px;
   height: 56px;
   cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +84,8 @@
   background: var(--lb-bg);
   border-radius: 16px;
   width: 380px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   animation: lb-slide-up 0.3s ease-out;
   border: 1px solid var(--lb-border);
@@ -249,6 +251,31 @@
   background: var(--lb-bg);
 }
 
+.lb-textarea-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.lb-char-count {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 11px;
+  color: var(--lb-text-secondary);
+  pointer-events: none;
+}
+
+.lb-error-message {
+  margin-top: -16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #fee2e2;
+}
+
 .lb-submit-btn {
   width: 100%;
   padding: 12px;
@@ -275,7 +302,6 @@
 
 /* Mobile Responsiveness */
 @media (max-width: 640px) {
-
   /* Fullscreen modal only when open */
   .lb-widget-overlay.lb-open {
     inset: 0 !important;
